@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cafezinhobom777pg</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Cafezinhobom777pg</h1>
+
+  <div id="login">
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Senha">
+    <button onclick="register()">Registrar</button>
+    <button onclick="login()">Entrar</button>
+  </div>
+
+  <div id="wallet" style="display:none">
+    <p>Saldo: R$ <span id="balance">0.00</span></p>
+    <input type="number" id="amount" placeholder="Valor">
+    <button onclick="deposit()">Depositar</button>
+    <button onclick="withdraw()">Retirar</button>
+  </div>
+
+  <script>
+    let token = '';
+
+    async function register() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      alert('Registrado com sucesso!');
+    }
+
+    async function login() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const res = await fetch('/api/auth/lo

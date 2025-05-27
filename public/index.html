@@ -1,106 +1,211 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Dashboard Cassino - Depósito</title>
+  <meta charset="UTF-8">
+  <title>Plataforma de Cassino</title>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 500px; margin: 20px auto; }
-    #dashboard { padding: 20px; border: 1px solid #ccc; border-radius: 5px; }
-    #wallet { background: #f9f9f9; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
-    input[type="number"] { width: 100%; padding: 8px; margin-bottom: 10px; }
-    button { padding: 10px 15px; cursor: pointer; }
-    #history { margin-top: 20px; }
-    #history ul { list-style: none; padding-left: 0; }
-    #history li { background: #eee; margin-bottom: 5px; padding: 8px; border-radius: 3px; }
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 450px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f7f7f7;
+    }
+    .hidden { display: none; }
+    h2 { text-align: center; }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      box-sizing: border-box;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover { background: #0056b3; }
+    #wallet {
+      background: #e9ecef;
+      padding: 15px;
+      text-align: center;
+      border-radius: 5px;
+      margin-bottom: 15px;
+    }
+    .double-btn {
+      width: 48%;
+      display: inline-block;
+    }
+    #message { text-align: center; color: green; }
   </style>
 </head>
 <body>
 
-  <div id="dashboard">
-    <h2>Bem-vindo, <span id="userDisplay"></span>!</h2>
+<!-- Login -->
+<div id="auth">
+  <h2>Login</h2>
+  <input type="text" id="username" placeholder="Usuário">
+  <input type="password" id="password" placeholder="Senha">
+  <button onclick="login()">Entrar</button>
+  <button onclick="showSignup()">Cadastrar</button>
+</div>
 
-    <div id="wallet">
-      <h3>Carteira para Depósito</h3>
-      <p>Saldo disponível: R$ <span id="balance">0,00</span></p>
-      <input type="number" id="depositAmount" placeholder="Valor para depósito (R$)" min="0.01" step="0.01" />
-      <button onclick="makeDeposit()">Depositar</button>
-    </div>
+<!-- Cadastro -->
+<div id="signup" class="hidden">
+  <h2>Cadastro</h2>
+  <input type="text" id="newUsername" placeholder="Usuário">
+  <input type="password" id="newPassword" placeholder="Senha">
+  <button onclick="signup()">Cadastrar</button>
+  <button onclick="showLogin()">Voltar ao Login</button>
+</div>
 
-    <div id="history">
-      <h3>Histórico de Depósitos</h3>
-      <ul id="depositList"></ul>
-    </div>
-
-    <button onclick="logout()">Sair</button>
+<!-- Dashboard -->
+<div id="dashboard" class="hidden">
+  <h2>Bem-vindo, <span id="userDisplay"></span>!</h2>
+  <div id="wallet">
+    Saldo: R$ <span id="balance">0,00</span>
   </div>
 
-  <script>
-    const user = "usuarioTeste"; // Simulação: usuário logado
-    let balance = 0;
-    let deposits = [];
+  <input type="number" id="depositAmount" placeholder="Valor para depósito">
+  <button onclick="makeDeposit()">Depositar</button>
 
-    function formatCurrency(value) {
-      return value.toFixed(2).replace('.', ',');
+  <input type="number" id="withdrawAmount" placeholder="Valor para saque">
+  <button onclick="makeWithdraw()">Sacar</button>
+
+  <div id="message"></div>
+
+  <button onclick="showSlots()">Ir para os Slots</button>
+  <button onclick="logout()" style="background: #dc3545;">Sair</button>
+</div>
+
+<!-- Tela de Slots -->
+<div id="slots" class="hidden">
+  <h2>Máquinas de Slots</h2>
+  <p>Aqui vai o seu conteúdo dos slots (pode ser imagem, animação, etc).</p>
+  <button onclick="showDashboard()">Voltar para a Dashboard</button>
+</div>
+
+<script>
+  function showSignup() {
+    document.getElementById('auth').classList.add('hidden');
+    document.getElementById('signup').classList.remove('hidden');
+  }
+
+  function showLogin() {
+    document.getElementById('signup').classList.add('hidden');
+    document.getElementById('auth').classList.remove('hidden');
+  }
+
+  function login() {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const storedPassword = localStorage.getItem('user_' + username);
+    if (storedPassword === password) {
+      localStorage.setItem('loggedInUser', username);
+      showDashboard();
+    } else {
+      alert('Usuário ou senha incorretos!');
     }
+  }
 
-    function loadData() {
-      const savedBalance = localStorage.getItem(user + '_balance');
-      const savedDeposits = localStorage.getItem(user + '_deposits');
-
-      balance = savedBalance ? parseFloat(savedBalance) : 0;
-      deposits = savedDeposits ? JSON.parse(savedDeposits) : [];
-
-      document.getElementById('userDisplay').textContent = user;
-      updateBalanceDisplay();
-      updateDepositHistory();
+  function signup() {
+    const username = document.getElementById('newUsername').value.trim();
+    const password = document.getElementById('newPassword').value.trim();
+    if (localStorage.getItem('user_' + username)) {
+      alert('Usuário já existe!');
+      return;
     }
+    localStorage.setItem('user_' + username, password);
+    alert('Cadastro feito! Faça login.');
+    showLogin();
+  }
 
-    function updateBalanceDisplay() {
-      document.getElementById('balance').textContent = formatCurrency(balance);
+  function logout() {
+    localStorage.removeItem('loggedInUser');
+    showLogin();
+    document.getElementById('dashboard').classList.add('hidden');
+    document.getElementById('slots').classList.add('hidden');
+  }
+
+  function showDashboard() {
+    const user = localStorage.getItem('loggedInUser');
+    if (!user) {
+      showLogin();
+      return;
     }
+    document.getElementById('userDisplay').textContent = user;
+    document.getElementById('auth').classList.add('hidden');
+    document.getElementById('signup').classList.add('hidden');
+    document.getElementById('slots').classList.add('hidden');
+    document.getElementById('dashboard').classList.remove('hidden');
+    loadBalance();
+  }
 
-    function updateDepositHistory() {
-      const list = document.getElementById('depositList');
-      list.innerHTML = '';
-      if (deposits.length === 0) {
-        list.innerHTML = '<li>Nenhum depósito realizado.</li>';
-        return;
-      }
-      deposits.forEach(dep => {
-        const li = document.createElement('li');
-        li.textContent = `R$ ${formatCurrency(dep.amount)} - ${new Date(dep.date).toLocaleString()}`;
-        list.appendChild(li);
-      });
+  function showSlots() {
+    document.getElementById('dashboard').classList.add('hidden');
+    document.getElementById('slots').classList.remove('hidden');
+  }
+
+  function getBalanceKey() {
+    return 'balance_' + localStorage.getItem('loggedInUser');
+  }
+
+  function loadBalance() {
+    const balance = parseFloat(localStorage.getItem(getBalanceKey())) || 0;
+    document.getElementById('balance').textContent = balance.toFixed(2).replace('.', ',');
+  }
+
+  function setBalance(value) {
+    localStorage.setItem(getBalanceKey(), value.toString());
+    document.getElementById('balance').textContent = value.toFixed(2).replace('.', ',');
+  }
+
+  function makeDeposit() {
+    const amount = parseFloat(document.getElementById('depositAmount').value);
+    if (isNaN(amount) || amount <= 0) {
+      showMessage('Valor inválido para depósito.', true);
+      return;
     }
+    const balance = parseFloat(localStorage.getItem(getBalanceKey())) || 0;
+    setBalance(balance + amount);
+    showMessage('Depósito realizado com sucesso!');
+    document.getElementById('depositAmount').value = '';
+  }
 
-    function makeDeposit() {
-      const input = document.getElementById('depositAmount');
-      const amount = parseFloat(input.value);
-      if (isNaN(amount) || amount <= 0) {
-        alert('Informe um valor válido para depósito.');
-        return;
-      }
-      balance += amount;
-      deposits.push({ amount, date: new Date().toISOString() });
-      localStorage.setItem(user + '_balance', balance.toString());
-      localStorage.setItem(user + '_deposits', JSON.stringify(deposits));
-      updateBalanceDisplay();
-      updateDepositHistory();
-      input.value = '';
-      alert('Depósito realizado com sucesso!');
+  function makeWithdraw() {
+    const amount = parseFloat(document.getElementById('withdrawAmount').value);
+    if (isNaN(amount) || amount <= 0) {
+      showMessage('Valor inválido para saque.', true);
+      return;
     }
-
-    function logout() {
-      alert('Você saiu da sua conta.');
-      // Para simulação, só recarrega a página
-      location.reload();
+    const balance = parseFloat(localStorage.getItem(getBalanceKey())) || 0;
+    if (amount > balance) {
+      showMessage('Saldo insuficiente.', true);
+      return;
     }
+    setBalance(balance - amount);
+    showMessage('Saque realizado com sucesso!');
+    document.getElementById('withdrawAmount').value = '';
+  }
 
-    // Inicializa dados na carga da página
-    window.onload = loadData;
-  </script>
+  function showMessage(text, error = false) {
+    const msg = document.getElementById('message');
+    msg.style.color = error ? 'red' : 'green';
+    msg.textContent = text;
+    setTimeout(() => { msg.textContent = ''; }, 3000);
+  }
+
+  // Auto-login se estiver logado
+  window.onload = () => {
+    if (localStorage.getItem('loggedInUser')) {
+      showDashboard();
+    }
+  };
+</script>
 
 </body>
 </html>
+
 
 

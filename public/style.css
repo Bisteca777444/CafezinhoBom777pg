@@ -1,0 +1,54 @@
+
+css
+Copiar código
+/* Fundo azul claro forte */
+body {
+  background-color: #00aaff; /* Azul claro forte */
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  color: white;
+}
+
+/* Container estilo "café preto" */
+#wallet, #login {
+  background-color: #2d2b28; /* Café preto */
+  padding: 20px;
+  margin: 40px auto;
+  max-width: 400px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.6);
+  text-align: center;
+}
+
+input, button {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  width: 80%;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+input {
+  background-color: #444;
+  color: white;
+}
+
+button {
+  background-color: #ff8c00;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #e67e00;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 20px;
+  color: #1c1c1c;
+  font-size: 28px;
+}

@@ -213,4 +213,66 @@ footer {
     gap: 20px;
   }
 }
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff7f0;
+  padding: 30px 40px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+  color: #4b2e2e;
+}
+
+.modal-content label {
+  display: block;
+  margin: 10px 0 5px;
+  color: #4b2e2e;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.modal-content button {
+  margin-top: 20px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 26px;
+  font-weight: bold;
+  color: #4b2e2e;
+  cursor: pointer;
+}
+
+/* Oculta modais */
+.hidden {
+  display: none;
+}
+
 

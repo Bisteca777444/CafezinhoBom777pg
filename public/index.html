@@ -1,43 +1,74 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-<link rel="stylesheet" href="style.css">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cafezinhobom777pg</title>
-  <link rel="stylesheet" href="style.css">
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CafezinhoBom777pg - Cassino Online</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h1>Cafezinhobom777pg</h1>
+  <!-- Cabeçalho -->
+  <header>
+    <div class="container">
+      <h1>CafezinhoBom777pg</h1>
+      <nav>
+        <ul>
+          <li><a href="#">Início</a></li>
+          <li><a href="#">Jogos</a></li>
+          <li><a href="#">Promoções</a></li>
+          <li><a href="#">Minha Conta</a></li>
+          <li><a href="#">Suporte</a></li>
+        </ul>
+        <div class="auth-buttons">
+          <a href="#" class="btn-login">Entrar</a>
+          <a href="#" class="btn-register">Registrar</a>
+        </div>
+      </nav>
+    </div>
+  </header>
 
-  <div id="login">
-    <input type="email" id="email" placeholder="Email">
-    <input type="password" id="password" placeholder="Senha">
-    <button onclick="register()">Registrar</button>
-    <button onclick="login()">Entrar</button>
-  </div>
+  <!-- Banner principal -->
+  <section class="banner">
+    <div class="container">
+      <h2>Bem-vindo ao Cassino mais quente do Brasil!</h2>
+      <p>Ganhe bônus de boas-vindas e rodadas grátis agora mesmo.</p>
+      <a href="#" class="btn-primary">Jogar Agora</a>
+    </div>
+  </section>
 
-  <div id="wallet" style="display:none">
-    <p>Saldo: R$ <span id="balance">0.00</span></p>
-    <input type="number" id="amount" placeholder="Valor">
-    <button onclick="deposit()">Depositar</button>
-    <button onclick="withdraw()">Retirar</button>
-  </div>
+  <!-- Seção de Jogos em Destaque -->
+  <section class="featured-games">
+    <div class="container">
+      <h3>Jogos em Destaque</h3>
+      <div class="games-grid">
+        <div class="game-card">
+          <img src="img/slot1.jpg" alt="Jogo Slot 1">
+          <h4>Slot da Sorte</h4>
+        </div>
+        <div class="game-card">
+          <img src="img/roleta.jpg" alt="Roleta Online">
+          <h4>Roleta Brasileira</h4>
+        </div>
+        <div class="game-card">
+          <img src="img/blackjack.jpg" alt="Blackjack">
+          <h4>Blackjack VIP</h4>
+        </div>
+        <!-- Adicione mais jogos aqui -->
+      </div>
+    </div>
+  </section>
 
-  <script>
-    let token = '';
+  <!-- Rodapé -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 CafezinhoBom777pg. Todos os direitos reservados.</p>
+      <ul class="footer-links">
+        <li><a href="#">Termos de Uso</a></li>
+        <li><a href="#">Política de Privacidade</a></li>
+        <li><a href="#">Jogo Responsável</a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>
 
-    async function register() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-      alert('Registrado com sucesso!');
-    }
-
-    async function login() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      const res = await fetch('/api/auth/lo

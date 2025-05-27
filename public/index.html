@@ -1,161 +1,106 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CafezinhoBom777pg - Cassino Online</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Dashboard Cassino - Depósito</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 500px; margin: 20px auto; }
+    #dashboard { padding: 20px; border: 1px solid #ccc; border-radius: 5px; }
+    #wallet { background: #f9f9f9; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+    input[type="number"] { width: 100%; padding: 8px; margin-bottom: 10px; }
+    button { padding: 10px 15px; cursor: pointer; }
+    #history { margin-top: 20px; }
+    #history ul { list-style: none; padding-left: 0; }
+    #history li { background: #eee; margin-bottom: 5px; padding: 8px; border-radius: 3px; }
+  </style>
 </head>
 <body>
 
-<!-- Modal Login -->
-<div id="modal-login" class="modal hidden">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('modal-login')">&times;</span>
-    <h2>Entrar</h2>
-    <form id="form-login">
-      <label for="login-email">Email:</label>
-      <input type="email" id="login-email" required />
-      <label for="login-password">Senha:</label>
-      <input type="password" id="login-password" required />
-      <button type="submit" class="btn-primary">Entrar</button>
-    </form>
-    <p>Não tem conta? <a href="#" onclick="toggleModals('modal-login', 'modal-register')">Cadastre-se</a></p>
+  <div id="dashboard">
+    <h2>Bem-vindo, <span id="userDisplay"></span>!</h2>
+
+    <div id="wallet">
+      <h3>Carteira para Depósito</h3>
+      <p>Saldo disponível: R$ <span id="balance">0,00</span></p>
+      <input type="number" id="depositAmount" placeholder="Valor para depósito (R$)" min="0.01" step="0.01" />
+      <button onclick="makeDeposit()">Depositar</button>
+    </div>
+
+    <div id="history">
+      <h3>Histórico de Depósitos</h3>
+      <ul id="depositList"></ul>
+    </div>
+
+    <button onclick="logout()">Sair</button>
   </div>
-</div>
 
-<!-- Modal Cadastro -->
-<div id="modal-register" class="modal hidden">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('modal-register')">&times;</span>
-    <h2>Registrar</h2>
-    <form id="form-register">
-      <label for="register-email">Email:</label>
-      <input type="email" id="register-email" required />
-      <label for="register-password">Senha:</label>
-      <input type="password" id="register-password" required />
-      <label for="register-password-confirm">Confirmar Senha:</label>
-      <input type="password" id="register-password-confirm" required />
-      <button type="submit" class="btn-primary">Registrar</button>
-    </form>
-    <p>Já tem conta? <a href="#" onclick="toggleModals('modal-register', 'modal-login')">Entrar</a></p>
-  </div>
-</div>>
-</body>
-  <!-- Cabeçalho -->
-  <header>
-    <div class="container">
-      <h1>CafezinhoBom777pg</h1>
-      <nav>
-        <ul>
-          <li><a href="#">Início</a></li>
-          <li><a href="#">Jogos</a></li>
-          <li><a href="#">Promoções</a></li>
-          <li><a href="#">Minha Conta</a></li>
-          <li><a href="#">Suporte</a></li>
-        </ul>
-        <div class="auth-buttons">
-          <a href="#" class="btn-login">Entrar</a>
-          <a href="#" class="btn-register">Registrar</a>
-        </div>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Banner principal -->
-  <section class="banner">
-    <div class="container">
-      <h2>Bem-vindo ao Cassino mais quente do Brasil!</h2>
-      <p>Ganhe bônus de boas-vindas e rodadas grátis agora mesmo.</p>
-      <a href="#" class="btn-primary">Jogar Agora</a>
-    </div>
-  </section>
-
-  <!-- Seção de Jogos em Destaque -->
-  <section class="featured-games">
-    <div class="container">
-      <h3>Jogos em Destaque</h3>
-      <div class="games-grid">
-        <div class="game-card">
-          <img src="img/slot1.jpg" alt="Jogo Slot 1">
-          <h4>Slot da Sorte</h4>
-        </div>
-        <div class="game-card">
-          <img src="img/roleta.jpg" alt="Roleta Online">
-          <h4>Roleta Brasileira</h4>
-        </div>
-        <div class="game-card">
-          <img src="img/blackjack.jpg" alt="Blackjack">
-          <h4>Blackjack VIP</h4>
-        </div>
-        <!-- Adicione mais jogos aqui -->
-      </div>
-    </div>
-  </section>
-
-  <!-- Rodapé -->
-  <footer>
-    <div class="container">
-      <p>&copy; 2025 CafezinhoBom777pg. Todos os direitos reservados.</p>
-      <ul class="footer-links">
-        <li><a href="#">Termos de Uso</a></li>
-        <li><a href="#">Política de Privacidade</a></li>
-        <li><a href="#">Jogo Responsável</a></li>
-      </ul>
-    </div>
-  </footer>
   <script>
-  // Abrir modais ao clicar nos botões
-  document.querySelector('.btn-login').addEventListener('click', e => {
-    e.preventDefault();
-    openModal('modal-login');
-  });
+    const user = "usuarioTeste"; // Simulação: usuário logado
+    let balance = 0;
+    let deposits = [];
 
-  document.querySelector('.btn-register').addEventListener('click', e => {
-    e.preventDefault();
-    openModal('modal-register');
-  });
-
-  function openModal(id) {
-    document.getElementById(id).classList.remove('hidden');
-  }
-
-  function closeModal(id) {
-    document.getElementById(id).classList.add('hidden');
-  }
-
-  function toggleModals(hideId, showId) {
-    closeModal(hideId);
-    openModal(showId);
-  }
-
-  // Validação e simulação de login
-  document.getElementById('form-login').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const email = this['login-email'].value;
-    const password = this['login-password'].value;
-    // Aqui você faria requisição ao back-end, por enquanto só alerta
-    alert(`Tentando logar com:\nEmail: ${email}\nSenha: ${password}`);
-    closeModal('modal-login');
-  });
-
-  // Validação e simulação de cadastro
-  document.getElementById('form-register').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const email = this['register-email'].value;
-    const password = this['register-password'].value;
-    const confirm = this['register-password-confirm'].value;
-
-    if (password !== confirm) {
-      alert('As senhas não conferem!');
-      return;
-      
+    function formatCurrency(value) {
+      return value.toFixed(2).replace('.', ',');
     }
-    // Aqui enviaria para o back-end
-    alert(`Cadastro feito com:\nEmail: ${email}`);
-    closeModal('modal-register');
-  });
-</script>
+
+    function loadData() {
+      const savedBalance = localStorage.getItem(user + '_balance');
+      const savedDeposits = localStorage.getItem(user + '_deposits');
+
+      balance = savedBalance ? parseFloat(savedBalance) : 0;
+      deposits = savedDeposits ? JSON.parse(savedDeposits) : [];
+
+      document.getElementById('userDisplay').textContent = user;
+      updateBalanceDisplay();
+      updateDepositHistory();
+    }
+
+    function updateBalanceDisplay() {
+      document.getElementById('balance').textContent = formatCurrency(balance);
+    }
+
+    function updateDepositHistory() {
+      const list = document.getElementById('depositList');
+      list.innerHTML = '';
+      if (deposits.length === 0) {
+        list.innerHTML = '<li>Nenhum depósito realizado.</li>';
+        return;
+      }
+      deposits.forEach(dep => {
+        const li = document.createElement('li');
+        li.textContent = `R$ ${formatCurrency(dep.amount)} - ${new Date(dep.date).toLocaleString()}`;
+        list.appendChild(li);
+      });
+    }
+
+    function makeDeposit() {
+      const input = document.getElementById('depositAmount');
+      const amount = parseFloat(input.value);
+      if (isNaN(amount) || amount <= 0) {
+        alert('Informe um valor válido para depósito.');
+        return;
+      }
+      balance += amount;
+      deposits.push({ amount, date: new Date().toISOString() });
+      localStorage.setItem(user + '_balance', balance.toString());
+      localStorage.setItem(user + '_deposits', JSON.stringify(deposits));
+      updateBalanceDisplay();
+      updateDepositHistory();
+      input.value = '';
+      alert('Depósito realizado com sucesso!');
+    }
+
+    function logout() {
+      alert('Você saiu da sua conta.');
+      // Para simulação, só recarrega a página
+      location.reload();
+    }
+
+    // Inicializa dados na carga da página
+    window.onload = loadData;
+  </script>
+
 </body>
 </html>
+
 

@@ -102,6 +102,57 @@
       </ul>
     </div>
   </footer>
+  <script>
+  // Abrir modais ao clicar nos botões
+  document.querySelector('.btn-login').addEventListener('click', e => {
+    e.preventDefault();
+    openModal('modal-login');
+  });
+
+  document.querySelector('.btn-register').addEventListener('click', e => {
+    e.preventDefault();
+    openModal('modal-register');
+  });
+
+  function openModal(id) {
+    document.getElementById(id).classList.remove('hidden');
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).classList.add('hidden');
+  }
+
+  function toggleModals(hideId, showId) {
+    closeModal(hideId);
+    openModal(showId);
+  }
+
+  // Validação e simulação de login
+  document.getElementById('form-login').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = this['login-email'].value;
+    const password = this['login-password'].value;
+    // Aqui você faria requisição ao back-end, por enquanto só alerta
+    alert(`Tentando logar com:\nEmail: ${email}\nSenha: ${password}`);
+    closeModal('modal-login');
+  });
+
+  // Validação e simulação de cadastro
+  document.getElementById('form-register').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = this['register-email'].value;
+    const password = this['register-password'].value;
+    const confirm = this['register-password-confirm'].value;
+
+    if (password !== confirm) {
+      alert('As senhas não conferem!');
+      return;
+    }
+    // Aqui enviaria para o back-end
+    alert(`Cadastro feito com:\nEmail: ${email}`);
+    closeModal('modal-register');
+  });
+</script>
 </body>
 </html>
 
